@@ -1,1 +1,1 @@
-#GSfS: Gold-Seeker-from-Shadow
+# GSfS: Gold-Seeker-from-Shadow
