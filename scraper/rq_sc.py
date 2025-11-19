@@ -5,49 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from typing import Optional
 
-"""
-All scraper MUST provide the same interface and the same result format.
-"""
-from urllib.parse import quote, unquote
-from typing import Optional, TypedDict, List
-
-
-class ProxyConfig(TypedDict):
-    http: str
-    https: str
-
-
-class ScraperResult(TypedDict):
-    content: str
-    errors: List[str]
-
-
-def fetch_content(
-    url: str,
-    timeout_ms: int,
-    proxy: Optional[ProxyConfig] = None,
-    **kwargs
-) -> ScraperResult:
-    """
-    Fetch web content from the specified url.
-    :param url: The url to fetch.
-    :param timeout_ms: The timeout in ms.
-    :param proxy: The proxy setting. In requests format.
-        {
-            "http": "socks5://user:password@proxy_host:port",
-            "https": "socks5://user:password@proxy_host:port"
-        }
-    :return:
-        {
-            'content': 'web content',           # The content in str. If it's an empty string, that means scrap fail.
-            'errors': ['error description'],    # The error list of str
-            'other optional fields': Any        # Any other extra fields that depends on scraper itself.
-        }
-    """
-    return {
-        'content': '',
-        'errors': ['This is just an example of scraper implementation,']
-    }
+from scbase import ProxyConfig, ScraperResult
 
 
 # rq scraper
@@ -166,11 +124,13 @@ def check_content_quality(html: str, format: str, target_keywords=None):
     """
     网页内容质量评估系统
     返回：tuple (is_valid, score, issues)
+    evaluate if a page is static -> is_valid == True
     """
     soup = BeautifulSoup(html, format)
     report = {'score': 100, 'issues': []}
 
     # 基础结构检测（网页6/7的完整性标准）
+    # if the content is dynamic, body will not be detected
     if not soup.find('body') or not soup.find('html'):
         report['issues'].append('Missing essential HTML tags')
         report['score'] -= 40
@@ -265,7 +225,10 @@ def main():
         "https": "socks5://user:password@proxy_host:port"
     }
 
-    result = fetch_content('https://www.cbc.ca/news/world/israel-gaza-aid-military-1.7538495?cmp=rss', 30000)
+    # result = fetch_content('https://www.cbc.ca/news/world/israel-gaza-aid-military-1.7538495?cmp=rss', 30000)
+    
+    # an example static page
+    result = fetch_content("https://www3.pioneer.com/argentina/PETWS/test.html",30000)
 
     if result['content']:
         print(f'Content : {result["content"]}')
