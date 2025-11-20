@@ -1,0 +1,5 @@
+{
+    "update_interval": 3600,
+    "max_articles_per_feed": 10,
+    "output_dir": "./data/output"
+}
