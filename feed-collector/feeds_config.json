@@ -1,0 +1,11 @@
+{
+  "theme": "科技",
+  "focus": "AI",
+  "prompt": "",
+  "feeds": {
+    "青柠学术": "https://qnscholar.github.io//feed.xml",
+    "MOOC中国": "https://www.cmooc.com/feed",
+    "知乎日报": "https://feeds.feedburner.com/zhihu-daily",
+    "知乎每日精选": "https://www.zhihu.com/rss"
+  }
+}
