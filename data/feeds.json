@@ -1,14 +1,14 @@
 {
     "feeds": [
         {
-            "name": "Python官方博客",
-            "url": "https://feeds.feedburner.com/PythonInsider",
-            "category": "programming"
-        },
-        {
             "name": "Hacker News",
             "url": "https://news.ycombinator.com/rss",
             "category": "tech"
+        }
+    ],
+    "feedBase": [
+        {
+            
         }
     ]
 }
