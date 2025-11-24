@@ -1,5 +1,12 @@
 {
     "update_interval": 3600,
     "max_articles_per_feed": 10,
-    "output_dir": "./data/output"
+    "output_dir": "./data/output",
+    "processing": {
+        "remove_duplicates": true,
+        "max_age_hours": 24,
+        "sort_by": "time",
+        "include_keywords": ["python", "ai", "machine learning"],
+        "exclude_keywords": ["java", "sport", "political"]
+    }
 }
