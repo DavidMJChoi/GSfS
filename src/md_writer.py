@@ -1,11 +1,13 @@
 import os
 from datetime import datetime
 from typing import List, Dict
+from src.database import DBManager
 
-class MarkdownWriter:
+class MDWriter:
     def __init__(self, output_dir: str = "./data/output"):
         self.output_dir = output_dir
         self.ensure_output_dir()
+        self.db = DBManager()
     
     def ensure_output_dir(self):
         """
@@ -81,13 +83,13 @@ class MarkdownWriter:
         
         # Category
         for category, category_articles in articles_by_category.items():
-            content += f"## 📁 {category.upper()} ({len(category_articles)} article(s))\n\n"
+            content += f"## {category.upper()} ({len(category_articles)} article(s))\n\n"
             
             for article in category_articles:
                 content += self.format_article(article)
         
         # Statistics
-        content += "## 📊 Statistics\n\n"
+        content += "## Statistics\n\n"
         content += f"- In total: {len(articles)} article(s)\n"
         for category in articles_by_category:
             count = len(articles_by_category[category])
@@ -112,28 +114,34 @@ class MarkdownWriter:
         print(f"Feeds list generated: {filepath}")
         return filepath
 
+    def generate_digest_from_db(self, limit: int = 50, category: str | None = None) -> str:
+        """Generate digest from database articles"""
+        articles = writer.db.get_recent_articles(limit, category)
+        return self.write_to_markdown(articles)
+
 # Simple unit test
 if __name__ == "__main__":
     # Test data
-    test_articles = [
-        {
-            'title': 'Python 3.12 新特性发布',
-            'source': 'Python官方博客',
-            'category': 'programming',
-            'link': 'https://example.com/python-3-12',
-            'published': '2024-01-15T10:00:00Z',
-            'summary': 'Python 3.12 带来了许多性能改进和新特性...'
-        },
-        {
-            'title': '人工智能的最新进展',
-            'source': 'Tech News',
-            'category': 'tech',
-            'link': 'https://example.com/ai-advances',
-            'published': '2024-01-15T09:00:00Z',
-            'summary': '研究人员在自然语言处理领域取得了突破...'
-        }
-    ]
+    # test_articles = [
+    #     {
+    #         'title': 'Python 3.12 新特性发布',
+    #         'source': 'Python官方博客',
+    #         'category': 'programming',
+    #         'link': 'https://example.com/python-3-12',
+    #         'published': '2024-01-15T10:00:00Z',
+    #         'summary': 'Python 3.12 带来了许多性能改进和新特性...'
+    #     },
+    #     {
+    #         'title': '人工智能的最新进展',
+    #         'source': 'Tech News',
+    #         'category': 'tech',
+    #         'link': 'https://example.com/ai-advances',
+    #         'published': '2024-01-15T09:00:00Z',
+    #         'summary': '研究人员在自然语言处理领域取得了突破...'
+    #     }
+    # ]
     
-    writer = MarkdownWriter()
-    output_file = writer.write_to_markdown(test_articles)
-    print(f"测试文件生成完成: {output_file}")
+    writer = MDWriter()
+    # output_file = writer.write_to_markdown(test_articles)
+    output_file = writer.generate_digest_from_db()
+    print(f"Test file generated: {output_file}")

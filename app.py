@@ -7,12 +7,13 @@ RSS Collection - main
 import json
 
 from src.rss_reader import RSSReader
-from src.md_writer import MarkdownWriter
+from src.md_writer import MDWriter
 from src.content_processor import ContentProcessor
 
 def main():
     r = RSSReader() 
-    w = MarkdownWriter()
+    w = MDWriter()
+    # db = DBManager()
 
     config = load_config()
     processing_config = config.get('processing', {})
@@ -20,7 +21,9 @@ def main():
 
     # fetch articles
     print("Fetching from RSS sources...")
-    articles = r.fetch_all_feeds()
+    _ = r.fetch_all_feeds(save_to_db=True)
+
+    articles = r.db.get_recent_articles()
     if not articles:
         print("Unable to fetch any article. Shutting down...")
         return

@@ -4,7 +4,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from src.rss_reader import RSSReader
-from src.md_writer import MarkdownWriter
+from src.md_writer import MDWriter
 
 def test_integration():
     """测试整个流程的集成"""
@@ -12,7 +12,7 @@ def test_integration():
     
     # 初始化
     reader = RSSReader()
-    writer = MarkdownWriter()
+    writer = MDWriter()
     
     # 获取文章
     articles = reader.fetch_all_feeds()
