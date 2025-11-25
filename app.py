@@ -15,19 +15,19 @@ import json
 from src.rss_reader import RSSReader
 from src.md_writer import MDWriter
 from src.content_processor import ContentProcessor
+import src.scraper.PlaywrightRenderedScraper as scraper
 
 def main():
     r = RSSReader() 
     w = MDWriter()
-    # db = DBManager()
+    p = ContentProcessor()
 
     config = load_config()
     processing_config = config.get('processing', {})
-    p = ContentProcessor()
 
     # fetch articles
     print("Fetching from RSS sources...")
-    _ = r.fetch_all_feeds(save_to_db=True)
+    _ = r.fetch_all_feeds(save_to_db=True, max_articles_per_feed=100)
 
     articles = r.db.get_recent_articles()
     if not articles:
@@ -48,6 +48,14 @@ def main():
     if not processed_articles:
         print("No article left based on current processing configuration.")
         return
+    
+
+    # TODO: FIX: cannot just use article['title'] since some titles contain illegal expression in a path
+    for article in processed_articles:
+        html = scraper.fetch_content(article['link'], 20000)['content']
+        if html:
+            with open('data/pages/'+article['title']+'.html', 'wt', encoding='utf-8') as f:
+                f.write(html)
 
     # generate md digest
     print("Generating article digest...")

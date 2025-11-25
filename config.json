@@ -3,7 +3,7 @@
     "max_articles_per_feed": 10,
     "output_dir": "./data/output",
     "processing": {
-        "remove_duplicates": true,
+        "remove_duplicates": false,
         "max_age_hours": 24,
         "sort_by": "time",
         "include_keywords": ["python", "ai", "machine learning"],

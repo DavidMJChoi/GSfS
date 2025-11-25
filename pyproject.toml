@@ -16,6 +16,7 @@ dependencies = [
     "python-dateutil>=2.8.2",
     "markdown>=3.5.1",
     "beautifulsoup4>=4.12.2",
+    "playwright==1.56.0",
 ]
 
 [project.optional-dependencies]
@@ -27,4 +28,4 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["."]  # 在当前目录查找包
-include = ["src*"]  # 包含 src 目录下的所有包
+include = ["src*", "src/scraper*"]  # 包含 src 目录下的所有包
