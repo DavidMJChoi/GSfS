@@ -4,6 +4,12 @@
 RSS Collection - main
 """
 
+"""
+workflow: 
+rss_reader -> fetch from RSS sources -> store into db
+get articles from db -> content processor -> processed articles -> md writer -> digest.md
+"""
+
 import json
 
 from src.rss_reader import RSSReader
