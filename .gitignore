@@ -5,3 +5,4 @@ iis/
 .DS_Store
 logs
 *.egg-info/
+data/pages
