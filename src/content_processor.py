@@ -30,7 +30,7 @@ class ContentProcessor:
             else:
                 print(f"Removing duplicates: {article['title'][:50]}...")
         
-        print(f"{len(unique_articles)}/{len(articles)} article(s) after duplicates removal.")
+        print(f"{len(unique_articles)}/{len(articles)} articles after duplicates removal.")
         return unique_articles
     
     def filter_by_keywords(self, articles: List[Dict], include_keywords: List[str] = None, 
@@ -60,7 +60,7 @@ class ContentProcessor:
             else:
                 filtered_articles.append(article)
         
-        print(f"{len(filtered_articles)}/{len(articles)} article(s) after keyword-based filtering")
+        print(f"{len(filtered_articles)}/{len(articles)} articles after keyword-based filtering")
         return filtered_articles
     
     def filter_by_recency(self, articles: List[Dict], hours: int = 24) -> List[Dict]:
@@ -91,7 +91,7 @@ class ContentProcessor:
                 # keep articles when parse error
                 recent_articles.append(article)
         
-        print(f"Within ({hours} hours): {len(recent_articles)}/{len(articles)} article(s)")
+        print(f"Within ({hours} hours): {len(recent_articles)}/{len(articles)} articles")
         return recent_articles
     
     def sort_articles(self, articles: List[Dict], sort_by: str = "time") -> List[Dict]:
@@ -121,7 +121,7 @@ class ContentProcessor:
         
         processed = articles.copy()
         
-        print(f"Processing {len(processed)} article(s)...")
+        print(f"Processing {len(processed)} articles...")
         
         if remove_duplicates:
             processed = self.remove_duplicates(processed)
@@ -134,7 +134,7 @@ class ContentProcessor:
         
         processed = self.sort_articles(processed, sort_by)
         
-        print(f"Done: {len(processed)} article(s)")
+        print(f"Done: {len(processed)} articles")
         return processed
 
 # Simple unit test
@@ -155,4 +155,4 @@ if __name__ == "__main__":
         max_age_hours=48
     )
     
-    print(f"Result: {len(processed)} article(s)")
+    print(f"Result: {len(processed)} articles")

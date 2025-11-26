@@ -17,6 +17,7 @@ dependencies = [
     "markdown>=3.5.1",
     "beautifulsoup4>=4.12.2",
     "playwright==1.56.0",
+    "openai>=2.8.1"
 ]
 
 [project.optional-dependencies]
