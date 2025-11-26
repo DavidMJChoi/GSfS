@@ -1,15 +1,14 @@
-# GSfS: Gold-Seeker-from-Shadow
+# GSfS: An Integrated System for Personalized RSS Digests
 [![Ask DeepWiki](https://devin.ai/assets/askdeepwiki.png)](https://deepwiki.com/DavidMJChoi/GSfS)
 
-This file is generated using [GitRead](https://www.gitread.dev/).
+This file was originally generated using [GitRead](https://www.gitread.dev/).
 
 ## 🚧 UNDER DEVELOPMENT 🚧
 This project is under development. Some functionalities have been implemented, but the whole system is not ready to be used. There is no any usable user interface neither.
 
-
 ## Introduction
 
-GSfS (Gold-Seeker-from-Shadow) is a (not so) comprehensive RSS feed aggregation and processing tool designed to fetch articles from multiple sources, process them according to user-defined rules, and generate a clean, readable Markdown digest.
+GSfS (Gold-Seeker-from-S***) is a (not so) comprehensive RSS feed aggregation and processing tool designed to fetch articles from multiple sources, process them according to user-defined rules, and generate a clean, readable Markdown digest.
 
 This is a toy project for one of my course in University of Macau.
 
@@ -35,33 +34,13 @@ The core workflow of the application is as follows:
 *   **Automated Markdown Digests**: Creates well-structured Markdown files containing a summary of the processed articles, grouped by category.
 *   **Logging**: All operations are logged to `logs/rss-collector.log` for debugging and monitoring.
 
-## Project Structure
-
-```
-├── app.py                      # Main application entry point
-├── config.json                 # Configuration for article processing
-├── requirements.txt            # Python dependencies
-├── data/
-│   ├── feeds.json              # List of RSS feed sources
-│   ├── output/                 # Directory for generated Markdown digests
-│   └── rss_collector.db        # SQLite database for articles
-├── src/
-│   ├── rss_reader.py           # Fetches and parses RSS feeds
-│   ├── database.py             # Manages all database operations
-│   ├── content_processor.py    # Filters, sorts, and de-duplicates articles
-│   ├── md_writer.py            # Generates the Markdown digest file
-│   └── scraper/                # Web scraping modules
-│       ├── PlaywrightRenderedScraper.py # Scraper for JS-rendered pages
-│       └── ...
-└── h2m/                        # Go utility for HTML-to-Markdown conversion
-```
-
 ## Getting Started
 
 ### Prerequisites
 
-*   Python 3.8+
-*   Go (optional, for the `h2m` utility)
+*   Python 3.12+
+*   Go
+*   An OpenAI API Key (or access to full-power LLM)
 
 ### Installation
 
@@ -73,7 +52,7 @@ The core workflow of the application is as follows:
 
 2.  **Install Python dependencies:**
     ```bash
-    pip install -r requirements.txt
+    pip install -e .
     ```
 
 3.  **Install Playwright browser binaries:**
@@ -81,6 +60,9 @@ The core workflow of the application is as follows:
     ```bash
     playwright install
     ```
+
+4. **Configure the API Key in your system's environment variables**
+   
 
 ### Usage
 
@@ -118,4 +100,4 @@ The core workflow of the application is as follows:
     ```
 
 4.  **Check the output:**
-    A new Markdown digest file will be created in the `data/output/` directory, named with the current date and time (e.g., `rss_digest_2024-01-15_10-30.md`).
+    ...
