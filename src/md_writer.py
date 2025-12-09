@@ -1,4 +1,5 @@
 import os
+import json
 from datetime import datetime
 from typing import List, Dict
 from src.database import DBManager
@@ -116,8 +117,69 @@ class MDWriter:
 
     def generate_digest_from_db(self, limit: int = 50, category: str | None = None) -> str:
         """Generate digest from database articles"""
-        articles = writer.db.get_recent_articles(limit, category)
+        articles = w.db.get_recent_articles(limit, category)
         return self.write_to_markdown(articles)
+    
+    def json_to_markdown(self, json_file_path: str):
+
+        try:
+            # 读取JSON文件
+            with open(json_file_path, 'r', encoding='utf-8') as file:
+                data = json.load(file)
+            
+            # 提取所需字段
+            title = data.get("EVENT_TITLE", "")
+            pub_time = data.get("PUB_TIME", "")
+            source = data.get("INFORMANT", "")
+            brief = data.get("EVENT_BRIEF", "")
+            event_text = data.get("EVENT_TEXT", "")
+            rate = data.get("RATE", {})
+            
+            # 计算Score
+            # 获取分类rating（不包括内容准确率、实践指导价值和潜在发展影响）
+            excluded_ratings = {"内容准确率", "实践指导价值", "潜在发展影响"}
+            
+            # 找出分类rating的最大值
+            category_max_rating = 0
+            max_category = ""
+            
+            for category, rating in rate.items():
+                if category not in excluded_ratings:
+                    if rating > category_max_rating:
+                        category_max_rating = rating
+                        max_category = category
+            
+            # 计算总Score
+            accuracy_rate = rate.get("内容准确率", 0)
+            practical_value = rate.get("实践指导价值", 0)
+            potential_impact = rate.get("潜在发展影响", 0)
+            
+            total_score = accuracy_rate + practical_value + potential_impact + category_max_rating
+            
+            # normalize to [0, 100]
+            total_score = round(total_score / 40 * 100)
+            
+            # 构建Markdown文本
+            markdown_text = f"""## {title} [{total_score}]
+
+**Published Time**: {pub_time}  
+**Source**: {source}  
+**Score**: {total_score}  
+**Category**: {max_category}    
+**Brief**: {brief}  
+
+### Summary  
+{event_text}
+"""
+        
+            return markdown_text, total_score
+            
+        except FileNotFoundError:
+            return f"错误：找不到文件 '{json_file_path}'"
+        except json.JSONDecodeError:
+            return f"错误：文件 '{json_file_path}' 不是有效的JSON格式"
+        except Exception as e:
+            return f"错误：处理文件时发生异常 - {str(e)}"
 
 # Simple unit test
 if __name__ == "__main__":
@@ -141,7 +203,11 @@ if __name__ == "__main__":
     #     }
     # ]
     
-    writer = MDWriter()
-    # output_file = writer.write_to_markdown(test_articles)
-    output_file = writer.generate_digest_from_db()
-    print(f"Test file generated: {output_file}")
+    
+    
+    
+    w = MDWriter()
+    # # output_file = writer.write_to_markdown(test_articles)
+    # output_file = writer.generate_digest_from_db()
+    # print(f"Test file generated: {output_file}")
+    print(w.json_to_markdown("data/pages/json/Unifying_our_mobile_and_desktop_domains.json")[0])
